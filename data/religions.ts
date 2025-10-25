@@ -1,0 +1,58 @@
+import { Religion } from '@/types';
+
+export const religions: Religion[] = [
+  {
+    id: 'christianity',
+    name: 'Christianity',
+    description: 'Secure your eternal dwelling in the celestial kingdom',
+    charityName: 'World Vision',
+    charityDescription: 'Supporting children and families in need worldwide',
+    icon: '✝️',
+    color: 'from-blue-500 to-indigo-600',
+  },
+  {
+    id: 'islam',
+    name: 'Islam',
+    description: 'Reserve your place in Jannah, the garden of paradise',
+    charityName: 'Islamic Relief',
+    charityDescription: 'Providing humanitarian aid and development programs',
+    icon: '☪️',
+    color: 'from-green-500 to-emerald-600',
+  },
+  {
+    id: 'judaism',
+    name: 'Judaism',
+    description: 'Claim your portion in Olam Ha-Ba, the world to come',
+    charityName: 'American Jewish Joint Distribution Committee',
+    charityDescription: 'Supporting Jewish communities and those in need',
+    icon: '✡️',
+    color: 'from-purple-500 to-violet-600',
+  },
+  {
+    id: 'hinduism',
+    name: 'Hinduism',
+    description: 'Ascend to Svarga, the heavenly realm of the gods',
+    charityName: 'Akshaya Patra Foundation',
+    charityDescription: 'Feeding millions of children across India',
+    icon: '🕉️',
+    color: 'from-orange-500 to-red-600',
+  },
+  {
+    id: 'buddhism',
+    name: 'Buddhism',
+    description: 'Find your sanctuary in Nirvana',
+    charityName: 'Buddhist Global Relief',
+    charityDescription: 'Combating chronic hunger and malnutrition',
+    icon: '☸️',
+    color: 'from-amber-500 to-yellow-600',
+  },
+  {
+    id: 'sikhism',
+    name: 'Sikhism',
+    description: 'Attain your place in Sachkhand, the realm of truth',
+    charityName: 'Khalsa Aid',
+    charityDescription: 'Providing humanitarian aid based on the Sikh principle of service',
+    icon: '☬',
+    color: 'from-cyan-500 to-blue-600',
+  },
+];
