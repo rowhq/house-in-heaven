@@ -1,7 +1,7 @@
 'use client';
 
 import { Property } from '@/types';
-import { worldZones } from '@/data/properties';
+import { cityDistricts as worldZones } from '@/lib/cityGenerator';
 
 interface WorldMapProps {
   properties: Property[];
