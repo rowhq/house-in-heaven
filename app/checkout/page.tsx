@@ -3,9 +3,10 @@
 import { properties } from '@/data/properties';
 import { religions } from '@/data/religions';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useMemo } from 'react';
 import Link from 'next/link';
 import Logo from '@/components/Logo';
+import { getEnhancedCompetitionStats } from '@/data/competitionStats';
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -15,11 +16,20 @@ function CheckoutContent() {
   const property = properties.find((p) => p.id === propertyId);
   const religion = religions.find((r) => r.id === religionId);
 
+  // Get matching bonus for this religion
+  const competitionStats = useMemo(() => getEnhancedCompetitionStats(), []);
+  const religionStats = competitionStats.find(s => s.religionId === religionId);
+  const matchingBonus = religionStats?.matchingBonus || 0;
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     customAmount: property?.price || 0,
   });
+
+  // Calculate matched amount
+  const matchedAmount = (formData.customAmount * matchingBonus) / 100;
+  const totalWithMatch = formData.customAmount + matchedAmount;
 
   const [memorial, setMemorial] = useState({
     enabled: false,
@@ -287,6 +297,38 @@ function CheckoutContent() {
                   </div>
                 )}
               </div>
+
+              {/* Matching Bonus Display */}
+              {matchingBonus > 0 && (
+                <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-4 border-2 border-orange-400 animate-pulse">
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 text-3xl">🔥</div>
+                    <div className="text-sm">
+                      <p className="font-bold text-orange-900 mb-1">
+                        +{matchingBonus}% MATCHING BONUS ACTIVE!
+                      </p>
+                      <p className="text-orange-800 mb-2">
+                        {religion.name} is currently ranked #{religionStats?.rank} in the competition!
+                      </p>
+                      <div className="bg-white/50 rounded-lg p-2 mt-2">
+                        <div className="flex justify-between text-xs text-orange-900 mb-1">
+                          <span>Your Donation:</span>
+                          <span className="font-semibold">${formData.customAmount.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between text-xs text-orange-900 mb-1">
+                          <span>Matching Bonus (+{matchingBonus}%):</span>
+                          <span className="font-semibold">+${matchedAmount.toLocaleString()}</span>
+                        </div>
+                        <div className="border-t border-orange-300 pt-1 mt-1"></div>
+                        <div className="flex justify-between text-sm font-bold text-orange-900">
+                          <span>Total Impact:</span>
+                          <span>${totalWithMatch.toLocaleString()}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
                 <div className="flex gap-3">

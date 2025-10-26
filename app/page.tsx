@@ -14,6 +14,13 @@ export default function Home() {
             <Logo />
             <div className="flex items-center gap-8">
               <Link
+                href="/competition"
+                className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2"
+              >
+                <span>🏆</span>
+                Competition
+              </Link>
+              <Link
                 href="/impact"
                 className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2"
               >
