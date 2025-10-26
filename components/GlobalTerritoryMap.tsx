@@ -94,8 +94,8 @@ export default function GlobalTerritoryMap() {
             : null;
 
           const isHovered = hoveredDistrict === district.id;
-          const isContested = stats && stats.properties && stats.properties.length > 1 &&
-            Math.max(...stats.properties.map(p => p.count)) < stats.totalProperties * 0.6;
+          const isContested = stats?.isContested || false;
+          const totalProperties = stats ? Object.values(stats.propertiesByReligion).reduce((sum, count) => sum + count, 0) : 0;
 
           // Territory colors
           const getTerritoryColor = () => {
@@ -187,7 +187,7 @@ export default function GlobalTerritoryMap() {
                   fill="#2d2d2d"
                   fontWeight="500"
                 >
-                  {stats.totalProperties} properties
+                  {totalProperties} properties
                 </text>
               )}
 
@@ -255,6 +255,7 @@ export default function GlobalTerritoryMap() {
           {(() => {
             const district = cityDistricts.find(d => d.id === hoveredDistrict);
             const stats = districtStats.find(d => d.districtName === district?.name);
+            const totalProperties = stats ? Object.values(stats.propertiesByReligion).reduce((sum, count) => sum + count, 0) : 0;
 
             return (
               <>
@@ -264,20 +265,20 @@ export default function GlobalTerritoryMap() {
                 {stats && (
                   <div className="space-y-2 text-xs">
                     <div className="text-gray-700">
-                      <span className="font-semibold">Properties:</span> {stats.totalProperties}
+                      <span className="font-semibold">Properties:</span> {totalProperties}
                     </div>
-                    {stats.properties && stats.properties
-                      .sort((a, b) => b.count - a.count)
-                      .map((prop) => {
-                        const religion = religions.find(r => r.id === prop.religionId);
+                    {Object.entries(stats.propertiesByReligion)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([religionId, count]) => {
+                        const religion = religions.find(r => r.id === religionId);
                         if (!religion) return null;
 
-                        const percentage = ((prop.count / stats.totalProperties) * 100).toFixed(0);
+                        const percentage = ((count / totalProperties) * 100).toFixed(0);
 
                         return (
-                          <div key={prop.religionId} className="flex items-center justify-between">
+                          <div key={religionId} className="flex items-center justify-between">
                             <span className="text-gray-700">{religion.icon} {religion.name}</span>
-                            <span className="font-semibold text-gray-900">{prop.count} ({percentage}%)</span>
+                            <span className="font-semibold text-gray-900">{count} ({percentage}%)</span>
                           </div>
                         );
                       })}
